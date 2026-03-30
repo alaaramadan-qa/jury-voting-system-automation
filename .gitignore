@@ -1,0 +1,30 @@
+node_modules/
+dist/
+.env
+.env.local
+
+# Playwright output
+test-results/
+playwright-report/
+playwright/.cache/
+
+# TypeScript compiled output
+*.js.map
+*.d.ts
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Coverage
+coverage/
