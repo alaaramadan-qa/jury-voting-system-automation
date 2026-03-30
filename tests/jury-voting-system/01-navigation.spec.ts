@@ -1,0 +1,122 @@
+/**
+ * Navigation & Page Access Tests
+  * Stories: SP-1793, SP-1796
+   * Tags: @smoke @regression @SP-1793 @SP-1796 @lang-en @lang-ar
+    */
+
+    import { test, expect } from '@playwright/test';
+    import { LoginPage } from '../../pages/LoginPage';
+    import { NominationsPage } from '../../pages/NominationsPage';
+    import { USERS } from '../../fixtures/testData';
+
+    test.describe('Navigation & Page Access @smoke @regression', () => {
+
+      test('@smoke @regression @SP-1793 @lang-en - Final Judge sees Jury Voting System menu tab in English', async ({ page }) => {
+          const loginPage = new LoginPage(page);
+              const nominationsPage = new NominationsPage(page);
+                  await loginPage.login(USERS.judge1.email, USERS.judge1.password);
+                      await loginPage.setLanguage('en');
+                          await nominationsPage.verifyMenuTabVisible('en');
+                              await nominationsPage.verifyTextDirection('ltr');
+                                });
+
+                                  test('@smoke @regression @SP-1793 @lang-ar - Final Judge sees Jury Voting System menu tab in Arabic', async ({ page }) => {
+                                      const loginPage = new LoginPage(page);
+                                          const nominationsPage = new NominationsPage(page);
+                                              await loginPage.login(USERS.judge1.email, USERS.judge1.password);
+                                                  await loginPage.setLanguage('ar');
+                                                      await nominationsPage.verifyMenuTabVisible('ar');
+                                                          await nominationsPage.verifyTextDirection('rtl');
+                                                            });
+
+                                                              test('@smoke @regression @SP-1796 @lang-en - Admin sees Jury Voting System menu tab in English', async ({ page }) => {
+                                                                  const loginPage = new LoginPage(page);
+                                                                      const nominationsPage = new NominationsPage(page);
+                                                                          await loginPage.login(USERS.admin.email, USERS.admin.password);
+                                                                              await loginPage.setLanguage('en');
+                                                                                  await nominationsPage.verifyMenuTabVisible('en');
+                                                                                      await nominationsPage.verifyTextDirection('ltr');
+                                                                                        });
+
+                                                                                          test('@smoke @regression @SP-1796 @lang-ar - Admin sees Jury Voting System menu tab in Arabic', async ({ page }) => {
+                                                                                              const loginPage = new LoginPage(page);
+                                                                                                  const nominationsPage = new NominationsPage(page);
+                                                                                                      await loginPage.login(USERS.admin.email, USERS.admin.password);
+                                                                                                          await loginPage.setLanguage('ar');
+                                                                                                              await nominationsPage.verifyMenuTabVisible('ar');
+                                                                                                                  await nominationsPage.verifyTextDirection('rtl');
+                                                                                                                    });
+                                                                                                                    
+                                                                                                                      test('@negative @regression @SP-1796 - Non-privileged user does NOT see Jury Voting System tab', async ({ page }) => {
+                                                                                                                          const loginPage = new LoginPage(page);
+                                                                                                                              const nominationsPage = new NominationsPage(page);
+                                                                                                                                  await loginPage.login(USERS.nonPrivileged.email, USERS.nonPrivileged.password);
+                                                                                                                                      await nominationsPage.verifyMenuTabNotVisible();
+                                                                                                                                        });
+                                                                                                                                        
+                                                                                                                                          test('@negative @regression @SP-1793 @SP-1796 - Unauthenticated user is redirected to login', async ({ page }) => {
+                                                                                                                                              const loginPage = new LoginPage(page);
+                                                                                                                                                  await page.goto('https://admin.stg.alweb4tech.com/jury-voting-system');
+                                                                                                                                                      await loginPage.verifyRedirectedToLogin();
+                                                                                                                                                        });
+                                                                                                                                                        
+                                                                                                                                                          test('@smoke @regression @SP-1793 @SP-1796 - Year filter defaults to current year', async ({ page }) => {
+                                                                                                                                                              const loginPage = new LoginPage(page);
+                                                                                                                                                                  const nominationsPage = new NominationsPage(page);
+                                                                                                                                                                      await loginPage.login(USERS.judge1.email, USERS.judge1.password);
+                                                                                                                                                                          await nominationsPage.navigateToJuryVotingSystem();
+                                                                                                                                                                              await nominationsPage.verifyYearFilterDefaultCurrentYear();
+                                                                                                                                                                                });
+                                                                                                                                                                                
+                                                                                                                                                                                  test('@smoke @regression @SP-1793 @lang-en - Final Judge sees three main tabs in English', async ({ page }) => {
+                                                                                                                                                                                      const loginPage = new LoginPage(page);
+                                                                                                                                                                                          const nominationsPage = new NominationsPage(page);
+                                                                                                                                                                                              await loginPage.login(USERS.judge1.email, USERS.judge1.password);
+                                                                                                                                                                                                  await loginPage.setLanguage('en');
+                                                                                                                                                                                                      await nominationsPage.navigateToJuryVotingSystem();
+                                                                                                                                                                                                          await nominationsPage.verifyThreeTabs('en');
+                                                                                                                                                                                                              await nominationsPage.verifyNominationsTabActiveByDefault();
+                                                                                                                                                                                                                  await nominationsPage.verifyTextDirection('ltr');
+                                                                                                                                                                                                                    });
+                                                                                                                                                                                                                    
+                                                                                                                                                                                                                      test('@smoke @regression @SP-1793 @lang-ar - Final Judge sees three main tabs in Arabic', async ({ page }) => {
+                                                                                                                                                                                                                          const loginPage = new LoginPage(page);
+                                                                                                                                                                                                                              const nominationsPage = new NominationsPage(page);
+                                                                                                                                                                                                                                  await loginPage.login(USERS.judge1.email, USERS.judge1.password);
+                                                                                                                                                                                                                                      await loginPage.setLanguage('ar');
+                                                                                                                                                                                                                                          await nominationsPage.navigateToJuryVotingSystem();
+                                                                                                                                                                                                                                              await nominationsPage.verifyThreeTabs('ar');
+                                                                                                                                                                                                                                                  await nominationsPage.verifyNominationsTabActiveByDefault();
+                                                                                                                                                                                                                                                      await nominationsPage.verifyTextDirection('rtl');
+                                                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                          test('@smoke @regression @SP-1796 @lang-en - Admin sees three main tabs in English', async ({ page }) => {
+                                                                                                                                                                                                                                                              const loginPage = new LoginPage(page);
+                                                                                                                                                                                                                                                                  const nominationsPage = new NominationsPage(page);
+                                                                                                                                                                                                                                                                      await loginPage.login(USERS.admin.email, USERS.admin.password);
+                                                                                                                                                                                                                                                                          await loginPage.setLanguage('en');
+                                                                                                                                                                                                                                                                              await nominationsPage.navigateToJuryVotingSystem();
+                                                                                                                                                                                                                                                                                  await nominationsPage.verifyThreeTabs('en');
+                                                                                                                                                                                                                                                                                      await nominationsPage.verifyTextDirection('ltr');
+                                                                                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                          test('@smoke @regression @SP-1796 @lang-ar - Admin sees three main tabs in Arabic', async ({ page }) => {
+                                                                                                                                                                                                                                                                                              const loginPage = new LoginPage(page);
+                                                                                                                                                                                                                                                                                                  const nominationsPage = new NominationsPage(page);
+                                                                                                                                                                                                                                                                                                      await loginPage.login(USERS.admin.email, USERS.admin.password);
+                                                                                                                                                                                                                                                                                                          await loginPage.setLanguage('ar');
+                                                                                                                                                                                                                                                                                                              await nominationsPage.navigateToJuryVotingSystem();
+                                                                                                                                                                                                                                                                                                                  await nominationsPage.verifyThreeTabs('ar');
+                                                                                                                                                                                                                                                                                                                      await nominationsPage.verifyTextDirection('rtl');
+                                                                                                                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                          test('@accessibility @regression - Tabs are keyboard navigable', async ({ page }) => {
+                                                                                                                                                                                                                                                                                                                              const loginPage = new LoginPage(page);
+                                                                                                                                                                                                                                                                                                                                  const nominationsPage = new NominationsPage(page);
+                                                                                                                                                                                                                                                                                                                                      await loginPage.login(USERS.judge1.email, USERS.judge1.password);
+                                                                                                                                                                                                                                                                                                                                          await nominationsPage.navigateToJuryVotingSystem();
+                                                                                                                                                                                                                                                                                                                                              await page.keyboard.press('Tab');
+                                                                                                                                                                                                                                                                                                                                                  const focusedElement = await page.evaluate(() => document.activeElement?.tagName);
+                                                                                                                                                                                                                                                                                                                                                      expect(['BUTTON', 'A', 'LI']).toContain(focusedElement);
+                                                                                                                                                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                                                                                                                                                        });
